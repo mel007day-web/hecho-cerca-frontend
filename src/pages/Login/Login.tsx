@@ -5,6 +5,8 @@ import './Login.css';
 
 import logo from '../../assets/images/logo.png';
 
+import { login } from '../../services/auth.service';
+
 import {
   Box,
   Button,
@@ -14,20 +16,14 @@ import {
   Alert
 } from '@mui/material';
 
-import { useAuth } from '../../Context/AuthContext';
-
 export default function Login() {
 
   const navigate = useNavigate();
 
-  const { login } = useAuth();
-
   const [email, setEmail] = useState('');
-
   const [password, setPassword] = useState('');
 
   const [loading, setLoading] = useState(false);
-
   const [error, setError] = useState('');
 
   const handleLogin = async () => {
@@ -35,13 +31,22 @@ export default function Login() {
     try {
 
       setLoading(true);
-
       setError('');
 
-      await login({
+      const response = await login({
         email,
         password
       });
+
+      localStorage.setItem(
+        'token',
+        response.token
+      );
+
+      localStorage.setItem(
+        'usuario',
+        JSON.stringify(response.usuario)
+      );
 
       navigate('/dashboard');
 
@@ -97,14 +102,12 @@ export default function Login() {
           </Typography>
 
           {error && (
-
             <Alert
               severity="error"
               sx={{ mb: 2 }}
             >
               {error}
             </Alert>
-
           )}
 
           <TextField
@@ -112,9 +115,7 @@ export default function Login() {
             label="Correo electrónico"
             margin="normal"
             value={email}
-            onChange={(e) =>
-              setEmail(e.target.value)
-            }
+            onChange={(e) => setEmail(e.target.value)}
           />
 
           <TextField
@@ -123,9 +124,7 @@ export default function Login() {
             type="password"
             margin="normal"
             value={password}
-            onChange={(e) =>
-              setPassword(e.target.value)
-            }
+            onChange={(e) => setPassword(e.target.value)}
           />
 
           <Button
