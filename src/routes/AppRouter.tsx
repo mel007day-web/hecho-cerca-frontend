@@ -1,12 +1,9 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-import Login from '../pages/Login/Login';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import Products from '../pages/Products/Products';
 import Categories from '../pages/Categories/Categories';
 import Producers from '../pages/Producers/Producers';
-
-import PrivateRoute from './PrivateRoute';
 
 export default function AppRouter() {
     return (
@@ -14,48 +11,32 @@ export default function AppRouter() {
 
             <Route
                 path="/"
-                element={<Navigate to="/login" replace />}
-            />
-
-            <Route
-                path="/login"
-                element={<Login />}
+                element={<Navigate to="/dashboard" replace />}
             />
 
             <Route
                 path="/dashboard"
-                element={
-                    <PrivateRoute>
-                        <Dashboard />
-                    </PrivateRoute>
-                }
+                element={<Dashboard />}
             />
 
             <Route
                 path="/dashboard/products"
-                element={
-                    <PrivateRoute>
-                        <Products />
-                    </PrivateRoute>
-                }
+                element={<Products />}
             />
 
             <Route
                 path="/dashboard/categories"
-                element={
-                    <PrivateRoute>
-                        <Categories />
-                    </PrivateRoute>
-                }
+                element={<Categories />}
             />
 
             <Route
                 path="/dashboard/producers"
-                element={
-                    <PrivateRoute>
-                        <Producers />
-                    </PrivateRoute>
-                }
+                element={<Producers />}
+            />
+
+            <Route
+                path="*"
+                element={<Navigate to="/dashboard" replace />}
             />
 
         </Routes>
